@@ -1,208 +1,8 @@
-// const alunos = [
-//     {
-//         nome: 'Eduardo',
-//         notas: [1, 4, 5, 7]
-//     },
-//     {
-//         nome: 'Ivan',
-//         notas: [5, 6, 7, 9]
-//     }
-// ];
-
-// //Aluno Ivan.
-// const ivan = alunos[1].nome;
-// const notaIvan = alunos[1].notas;
-// let somaIvan = 0;
-
-// //Calculando a soma das notas do aluno Ivan.
-// for(let i = 0; i < notaIvan.length; i++) {
-//     somaIvan += notaIvan[i];
-// }
-
-// //Fazendo a média das notas do aluno Ivan.
-// const mediaIvan = somaIvan / notaIvan.length;
-
-// //calcular se a média foi >= 6.
-// //E mostrar se ele foi aprovado ou não.
-// if (mediaIvan >= 6) {
-//     console.log(`O aluno ${ivan}, está aprovado com uma média de: ${mediaIvan}`);
-// } else {
-//     console.log(`O aluno ${ivan}, está reprovado com uma média de: ${mediaIvan}`);
-// }
-
-// //Aluno Eduardo.
-// const eduardo = alunos[0].nome;
-// const notaEduardo = alunos[0].notas;
-// let somaEduardo = 0;
-
-// //Calculando a soma das notas do aluno Eduardo.
-// for(let i = 0; i < notaEduardo.length; i++) {
-//     somaEduardo += notaEduardo[i];
-// }
-
-// //Fazendo a média das notas do aluno Eduardo.
-// const mediaEduardo = somaEduardo / notaEduardo.length;
-
-// //calcular se a média foi >= 6.
-// //E mostrar se ele foi aprovado ou não.
-// if (mediaEduardo >= 6) {
-//     console.log(`O aluno ${eduardo}, está aprovado com uma média de: ${mediaEduardo}`);
-// } else {
-//     console.log(`O aluno ${eduardo}, está reprovado com uma média de: ${mediaEduardo}`);
-// }
-
-// console.log("------------------------------------------------------------------");
-
-// const alunos = [
-//     {
-//         nome: 'Eduardo',
-//         notas: [1, 4, 5, 7]
-//     },
-//     {
-//         nome: 'Ivan',
-//         notas: [5, 6, 7, 9]
-//     }
-// ];
-
-// for (let i = 0; i < alunos.length; i++) {
-//     const aluno = alunos[i];
-//     console.log(aluno.nome);
-//     const notas = aluno.notas;
-//     let soma = 0;
-
-//     for (let j = 0; j < notas.length; j++) {
-//         soma += notas[j];
-//     }
-
-//     const media = soma / notas.length;
-
-//     if (media >= 6) {
-//         console.log(`O aluno ${aluno.nome} está aprovado com média ${media}`);
-//     } else {
-//         console.log(`O aluno ${aluno.nome} está reprovado com média ${media}`);
-//     }
-// }
-
-// console.log("------------------------------------------------------------------");
-
-// const alunos = [
-//     {
-//         nome: 'Eduardo',
-//         sexo: 'Masculino', 
-//         notas: {
-//             matematica: 1,
-//             historia: 4,
-//             portugues: 5
-//         }
-//     },
-//     {
-//         nome: 'Ivan',
-//         sexo: 'Masculino',
-//         notas: {
-//             matematica: 9,
-//             historia: 5,
-//             portugues: 6
-//         }
-//     },
-//     {
-//         nome: 'Mariana',
-//         sexo: 'Feminino',
-//         notas: {
-//             matematica: 9,
-//             historia: 8,
-//             portugues: 10
-//         }
-//     },
-//     {
-//         nome: `O'hara`,
-//         sexo: 'Feminino', 
-//         notas: {
-//             matematica: 10,
-//             historia: 10,
-//             portugues: 10
-//         }
-//     }
-// ];
-
-// for(let i = 0; i < alunos.length; i++) {
-//     const aluno = alunos[i];
-//     const notas = Object.values(aluno.notas);
-//     let soma = 0;
-
-//     for(let j = 0; j < notas.length; j++) {
-//         soma += notas[j];
-//     }
-
-//     const media = soma / notas.length;
-
-//     const artigo = aluno.sexo === 'Feminino' ? 'A aluna' : 'O aluno';
-//     const aprovado = media >= 6 ? 'aprovado(a)' : 'reprovado(a)';
-
-//     console.log(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)}`);
-// }
-
-// console.log("------------------------------------------------------------------");
-
-// const alunos = [];
-
-// function cadastroPermitido () {
-//     confirmação = confirm();
-// }
-
-// cadastroPermitido();
-
-// while (confirmação === true) {
-//     const alunoACadastrar = prompt('Qual o nome do aluno?');
-//     const sexoAluno = prompt('Qual o sexo do aluno?');
-//     const notaMatemática = prompt('Qual a nota do aluno(a) em matemática?');
-//     const notaPortugues = prompt('Qual a nota do aluno(a) em português?');
-//     const notaHistoria = prompt('Qual a nota do aluno(a) em história?');
-
-//     localStorage(alunos.push({
-//         nome: alunoACadastrar,
-//         sexo: sexoAluno,
-//         notas: {
-//             matematica: parseInt(notaMatemática),
-//             portugues: parseInt(notaPortugues),
-//             historia: parseInt(notaHistoria)
-//         }
-//     }));
-
-//     cadastroPermitido();
-// }
-
-
-// for(let i = 0; i < alunos.length; i++) {
-//         const aluno = alunos[i];
-//         const notas = Object.values(aluno.notas);
-//         let soma = 0;
-//         let aprovados;
-
-//         for(let j = 0; j < notas.length; j++) {
-//             soma += notas[j];
-//         }
-
-//         const media = soma / notas.length;
-
-//         const artigo = aluno.sexo === 'Feminino' ? 'A aluna' : 'O aluno';
-//         const aprovado = media >= 6 ? 'aprovado(a)' : 'reprovado(a)';
-
-//         const exibeAluno = `${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)}`;
-//         alert(exibeAluno);
-
-
-//     }
-
-//lista dos alunos.
-
-// console.log("------------------------------------------------------------------");
-
-//chamando o botão "Cadastrar aluno".
 const cadastrarAluno = () => {
-    
+
     //Criando o array dos alunos que serão cadastrados.
     const alunos = [];
-    
+
     //criando variáveis para a confirmação das informações.
     let confirmarPeloNome;
     let confirmação;
@@ -307,7 +107,7 @@ const cadastrarAluno = () => {
         let reprovados = 0;
         let maiorMedia;
         let melhorAluno;
-        
+
         // let melhorMedia = alunos.Object.values(alunos.notas);
 
         //For para calcular a média dos alunos.
@@ -319,7 +119,7 @@ const cadastrarAluno = () => {
 
             //Somando as notas de cada aluno.
             for (let j = 0; j < notas.length; j++) {
-                soma += notas[j]; 
+                soma += notas[j];
             }
 
             //calculando a média
