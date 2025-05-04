@@ -1,0 +1,28 @@
+h1 {
+  text-align: center;
+  font-size: 500%;
+}
+
+p {
+  text-align: center;
+  font-size: 250%;
+  padding: 10px 20px;
+}
+
+button {
+  font-size: 35px;
+  display: block;
+  background-color: white;
+  color: black;
+  margin: 0 auto;
+  margin-top: 10%;
+  padding: 25px 50px;
+  border-color: black;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+button:hover {
+  /* Estilo quando o mouse passa por cima do botão */
+  background-color: rgb(153, 213, 233);
+}
