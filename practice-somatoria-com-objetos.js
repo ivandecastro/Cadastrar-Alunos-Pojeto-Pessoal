@@ -106,17 +106,18 @@ const cadastrarAluno = () => {
 
         let aprovados = 0;
         let reprovados = 0;
-        let maiorMedia;
-        let melhorAluno;
 
-        // let melhorMedia = alunos.Object.values(alunos.notas);
+        // Variável da maior média.
+        let maiorMedia; 
+        let melhorAluno;
+        let soma = 0;
 
         //For para calcular a média dos alunos.
         for (let i = 0; i < alunos.length; i++) {
             //coletando as variáveis de cada aluno: nome do aluno e notas.
             let aluno = alunos[i];
             let notas = Object.values(aluno.notas);
-            let soma = 0;
+            
 
             //Somando as notas de cada aluno.
             for (let j = 0; j < notas.length; j++) {
@@ -136,7 +137,7 @@ const cadastrarAluno = () => {
                 artigo = 'A aluna';
                 segundoArtigo = 'a';
             } else {
-                artigo = 'O alune';
+                artigo = 'E alune';
                 segundoArtigo = 'e';
             }
 
@@ -145,11 +146,14 @@ const cadastrarAluno = () => {
 
             //Alert do resultado.
             alert(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
+            
+            //ternário para contar quais foram aprovados e quais foram reprovados.
             soma >= 18 ? aprovados++ : reprovados++;
+            //Mostrar quantos alunos foram aprovados e quantos foram reprovados.
+            console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
+            console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
         }
-
-        console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
-        console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
+        
     }
     cadastro();
 }
