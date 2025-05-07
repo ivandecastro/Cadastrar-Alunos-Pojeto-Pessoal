@@ -1,3 +1,4 @@
+//Chamando a função do botão.
 const cadastrarAluno = () => {
 
     //Criando o array dos alunos que serão cadastrados.
@@ -143,7 +144,7 @@ const cadastrarAluno = () => {
             const aprovado = media >= 6 ? `aprovad${segundoArtigo}` : `reprovad${segundoArtigo}`;
 
             //Alert do resultado.
-            alert(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(1)} pontos.`);
+            alert(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
             soma >= 18 ? aprovados++ : reprovados++;
         }
 
