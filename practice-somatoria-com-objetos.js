@@ -126,7 +126,7 @@ const cadastrarAluno = () => {
             //calculando a média
             const media = soma / notas.length;
 
-            if(media > maiorMedia) {
+            if (media > maiorMedia) {
                 maiorMedia = media;
                 melhorAluno = aluno.nome;
             }
@@ -153,14 +153,20 @@ const cadastrarAluno = () => {
             alert(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
 
             //ternário para contar quais foram aprovados e quais foram reprovados.
-            soma >= 18 ? aprovados++ : reprovados++;
+            media >= 6 ? aprovados++ : reprovados++;
             //Mostrar quantos alunos foram aprovados e quantos foram reprovados.
         }
 
-        console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
-        console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
-        alert(`O aluno(a) com a maior nota é: ${melhorAluno} com uma média de ${maiorMedia.toFixed(2)} pontos.`);
+        //If para evitar que esses logs sejam chamados sem um cadastro.
+        if (aprovados != 0 && reprovados != 0) {
+            console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
+            console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
+        }
 
+        //If para evitar que esse alert seja chamado sem um cadastro.
+        if (maiorMedia != 0 && melhorAluno != '') {
+            alert(`O aluno(a) com a maior nota é: ${melhorAluno} com uma média de ${maiorMedia.toFixed(2)} pontos.`);
+        }
     }
     cadastro();
 }
