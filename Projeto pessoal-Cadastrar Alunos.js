@@ -1,6 +1,21 @@
 //Criando o array dos alunos com localStorage para armazela-los.
 const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
 
+const proibicoes = (verificarValor) => {
+    if (verificarValor === null || verificarValor === '' || verificarValor < 0 ||
+        verificarValor > 10 || isNaN(verificarValor)) {
+
+        alert('Por favor, digite um valor permitido.');
+    } else {
+        verificarValor.trim();
+    }
+};
+
+const remover = (ItemARemover) => {
+    const nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
+    ItemARemover = ItemARemover.filter(aluno => aluno.nome !== nomeParaRemover);
+}
+
 //Chamando a função do botão.
 const cadastrarAluno = () => {
 
@@ -66,15 +81,9 @@ const cadastrarAluno = () => {
 
                 do {
                     nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`);
-                    const proibicoes = (nota === null || nota === '' || nota < 0 || nota > 10 || isNaN(nota));
 
                     // Garante que nota seja string válida para avaliação
-                    if (proibicoes) {
-                        alert('Por favor, digite uma nota válida.');
-                    } else {
-                        nota.trim();
-                    }
-
+                    proibicoes(nota);
 
                 } while (
                     nota === null || // impede o cancelamento
@@ -174,6 +183,11 @@ const cadastrarAluno = () => {
     }
 
     cadastro();
+    console.log(alunos);
+}
+
+const removerAluno = () => {
+    remover(alunos);
     console.log(alunos);
 }
 
