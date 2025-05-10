@@ -1,9 +1,11 @@
+//Criando o array dos alunos com localStorage para armazela-los.
+const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
+
 //Chamando a função do botão.
 const cadastrarAluno = () => {
 
-    //Criando o array dos alunos que serão cadastrados.
-    const alunos = [];
-
+    //Chamando o array dos alunos que serão cadastrados.
+    alunos;
     //criando variáveis para a confirmação das informações.
     let confirmarPeloNome;
     let confirmação;
@@ -101,6 +103,8 @@ const cadastrarAluno = () => {
                 }
             });
 
+            localStorage.setItem('alunos', JSON.stringify(alunos));
+
             cadastroPermitido('deseja fazer o cadastro de mais um aluno?');
         }
 
@@ -168,5 +172,9 @@ const cadastrarAluno = () => {
             alert(`O aluno(a) com a maior nota é: ${melhorAluno} com uma média de ${maiorMedia.toFixed(2)} pontos.`);
         }
     }
+
     cadastro();
+    console.log(alunos);
 }
+
+console.log(alunos);
