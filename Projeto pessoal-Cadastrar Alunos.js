@@ -1,11 +1,12 @@
 //Criando o array dos alunos com localStorage para armazela-los.
 const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
 
-const proibicoes = (verificarValor) => {
-    if (verificarValor === null || verificarValor === '' || verificarValor < 0 ||
-        verificarValor > 10 || isNaN(verificarValor)) {
+//Function para proibir os possíveis resultados das perguntas.
+const proibicoes = (verificarValor, mensagem) => {
+    if (verificarValor === null || verificarValor === '' || isNaN(verificarValor) ||
+        Number(verificarValor) > 10 || Number(verificarValor) < 0) {
 
-        alert('Por favor, digite um valor permitido.');
+        alert(mensagem);
     } else {
         verificarValor.trim();
     }
@@ -16,7 +17,7 @@ const remover = (ItemARemover) => {
     ItemARemover = ItemARemover.filter(aluno => aluno.nome !== nomeParaRemover);
 }
 
-//Chamando a função do botão.
+//Chamando a função do botão de Cadastro dos alunos do html.
 const cadastrarAluno = () => {
 
     //Chamando o array dos alunos que serão cadastrados.
@@ -33,8 +34,9 @@ const cadastrarAluno = () => {
     // Perguntando
     cadastroPermitido('Deseja fazer o cadastro de um aluno?');
 
-    //Enquanto o cadrastro não for cancelado os cadastros continuarão.
+
     const cadastro = () => {
+        //Enquanto o cadrastro não for cancelado os cadastros continuarão.
         while (confirmação === true) {
 
             //Informações dos alunos: nome, sexo e notas.
@@ -45,8 +47,10 @@ const cadastrarAluno = () => {
                 alert('Por favor, digite o nome de um aluno.');
                 return cadastro();
             } else if (alunoACadastrar === null) { // verificar se a pessoa não clicou no botão por acidente
+
                 confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?') //confirmando o cancelamento do cadastro
 
+                //if para saber se a pessoa deseja cancelar o cadastro.
                 if (confirmarPeloNome === true) {
                     break;
                 } else {
@@ -78,12 +82,13 @@ const cadastrarAluno = () => {
             // Confirmar se a nota é === '' or === null or < 0.
             const obterNotaValida = (materia) => {
                 let nota;
-
-                do {
+                let aviso = alert('Por favor, digite uma nota válida.')
+                
+                do { //looping para confirmarção da nota.
                     nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`);
 
-                    // Garante que nota seja string válida para avaliação
-                    proibicoes(nota);
+                    // Garante que nota seja string válida para avaliação.
+                    proibicoes(nota, aviso);
 
                 } while (
                     nota === null || // impede o cancelamento
@@ -91,14 +96,14 @@ const cadastrarAluno = () => {
                     isNaN(nota) || // impede letras ou símbolos
                     Number(nota) < 0 ||// impede nota negativa
                     Number(nota) > 10
-                )
+                );
 
-                return Number(nota);
+                return Number(nota); //retornar a nota como número.
             }
 
-            let notaMatemática = obterNotaValida('Matemática');
-            let notaPortugues = obterNotaValida('Português');
-            let notaHistoria = obterNotaValida('História');
+            let notaMatemática = obterNotaValida('Matemática'); //Nota em matemática.
+            let notaPortugues = obterNotaValida('Português');   //Nota em português.
+            let notaHistoria = obterNotaValida('História'); //Nota em história.
             //Fim da coleta de informações dos alunos.
 
             //Adicionando as informações dos alunos à lista.
@@ -112,13 +117,15 @@ const cadastrarAluno = () => {
                 }
             });
 
-            localStorage.setItem('alunos', JSON.stringify(alunos));
 
-            cadastroPermitido('deseja fazer o cadastro de mais um aluno?');
+            localStorage.setItem('alunos', JSON.stringify(alunos)); //Salvando as informações de cada aluno 
+            //no localStorage.
+
+            cadastroPermitido('deseja fazer o cadastro de mais um aluno?'); //perguntar sobre outro cadastros.
         }
 
-        let aprovados = 0;
-        let reprovados = 0;
+        let aprovados = 0; //Variável dos alunos aprovados.
+        let reprovados = 0; //Variável dos alunos reprovados.
 
         // Variável da maior média.
         let maiorMedia = 0;
@@ -139,13 +146,14 @@ const cadastrarAluno = () => {
             //calculando a média
             const media = soma / notas.length;
 
+            //If para mostrar qual o aluno que teve a maior média.
             if (media > maiorMedia) {
                 maiorMedia = media;
                 melhorAluno = aluno.nome;
             }
 
-            let artigo;
-            let segundoArtigo;
+            let artigo; //Variável para especificar a frase da pergunta.
+            let segundoArtigo; //Variável para especificar a frase da pergunta.
 
             //If para mostrar o artigo adequado para cada aluno.
             if (aluno.sexo === 'Masculino') {
@@ -183,10 +191,13 @@ const cadastrarAluno = () => {
     }
 
     cadastro();
-    console.log(alunos);
+    console.log(alunos); //Mostra a lista de alunos após o cadastro.
 }
 
+//Pegando o botão de remover alunos do html.
 const removerAluno = () => {
+    const pergunta = prompt('Qual o nome do aluno que deseja remover?');
+    proibicoes(pergunta);
     remover(alunos);
     console.log(alunos);
 }
