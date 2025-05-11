@@ -47,7 +47,7 @@ const cadastrarAluno = () => {
                 alert('Por favor, digite o nome de um aluno.');
                 return cadastro();
             } else if (alunoACadastrar === null) { // verificar se a pessoa não clicou no botão por acidente
-
+                
                 confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?') //confirmando o cancelamento do cadastro
 
                 //if para saber se a pessoa deseja cancelar o cadastro.
@@ -82,13 +82,12 @@ const cadastrarAluno = () => {
             // Confirmar se a nota é === '' or === null or < 0.
             const obterNotaValida = (materia) => {
                 let nota;
-                let aviso = alert('Por favor, digite uma nota válida.')
                 
                 do { //looping para confirmarção da nota.
                     nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`);
 
                     // Garante que nota seja string válida para avaliação.
-                    proibicoes(nota, aviso);
+                    proibicoes(nota, 'Por favor, digite uma nota válida.');
 
                 } while (
                     nota === null || // impede o cancelamento
