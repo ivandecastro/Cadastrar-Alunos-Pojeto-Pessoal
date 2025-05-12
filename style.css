@@ -26,3 +26,21 @@ button:hover {
   /* Estilo quando o mouse passa por cima do botão */
   background-color: rgb(153, 213, 233);
 }
+
+ul {
+  position: relative;
+  left: -2rch;
+  bottom: 450px;  
+  margin-right: 65%;
+  background-color: bisque;
+}
+
+h2 {
+  position: relative;
+  bottom: 465px;
+  left: 13.5%;
+}
+
+label {
+  margin-left: 31.5%;
+}
