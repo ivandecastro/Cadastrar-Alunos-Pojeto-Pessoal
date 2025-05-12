@@ -9,11 +9,19 @@ const adicionarAlunosNaLista = (alunos) => {
     alunos.forEach((aluno) => {
         const li = document.createElement("li");
         const notas = Object.values(aluno.notas).join(" - ");
+        let status;
         const media = (
             (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / 3
         ).toFixed(2);
+
+        if(media >= 6) {
+            status = 'Aprovado'
+        } else {
+            status = 'Reprovado'
+        }
+
         li.textContent = `${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
-        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media}`;
+        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media} ==> ${status}`;
         ul.appendChild(li);
     });
 };
