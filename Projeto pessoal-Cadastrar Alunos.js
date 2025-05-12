@@ -1,6 +1,24 @@
 //Criando o array dos alunos com localStorage para armazela-los.
 const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
 
+//Lista de todos os alunos que foram cadastrados.
+const adicionarAlunosNaLista = (alunos) => {
+    const ul = document.getElementById("lista-alunos");
+    ul.innerHTML = ""; // limpa a lista antes de adicionar
+
+    alunos.forEach((aluno) => {
+        const li = document.createElement("li");
+        const notas = Object.values(aluno.notas).join(" - ");
+        const media = (
+            (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / 3
+        ).toFixed(2);
+        li.textContent = `${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
+        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media}`;
+        ul.appendChild(li);
+    });
+};
+
+
 //Function para proibir os possíveis resultados das perguntas.
 const proibicoes = (verificarValor, mensagem) => {
     if (verificarValor === null || verificarValor === '' || isNaN(verificarValor) ||
@@ -11,11 +29,6 @@ const proibicoes = (verificarValor, mensagem) => {
         verificarValor.trim();
     }
 };
-
-const remover = (ItemARemover) => {
-    const nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
-    ItemARemover = ItemARemover.filter(aluno => aluno.nome !== nomeParaRemover);
-}
 
 //Chamando a função do botão de Cadastro dos alunos do html.
 const cadastrarAluno = () => {
@@ -47,7 +60,7 @@ const cadastrarAluno = () => {
                 alert('Por favor, digite o nome de um aluno.');
                 return cadastro();
             } else if (alunoACadastrar === null) { // verificar se a pessoa não clicou no botão por acidente
-                
+
                 confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?') //confirmando o cancelamento do cadastro
 
                 //if para saber se a pessoa deseja cancelar o cadastro.
@@ -82,7 +95,7 @@ const cadastrarAluno = () => {
             // Confirmar se a nota é === '' or === null or < 0.
             const obterNotaValida = (materia) => {
                 let nota;
-                
+
                 do { //looping para confirmarção da nota.
                     nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`);
 
@@ -174,7 +187,8 @@ const cadastrarAluno = () => {
 
             //ternário para contar quais foram aprovados e quais foram reprovados.
             media >= 6 ? aprovados++ : reprovados++;
-            //Mostrar quantos alunos foram aprovados e quantos foram reprovados.
+            
+            adicionarAlunosNaLista(alunos);
         }
 
         //If para evitar que esses logs sejam chamados sem um cadastro.
@@ -193,12 +207,10 @@ const cadastrarAluno = () => {
     console.log(alunos); //Mostra a lista de alunos após o cadastro.
 }
 
+
+
 //Pegando o botão de remover alunos do html.
 const removerAluno = () => {
-    const pergunta = prompt('Qual o nome do aluno que deseja remover?');
-    proibicoes(pergunta);
-    remover(alunos);
-    console.log(alunos);
 }
 
 console.log(alunos);
