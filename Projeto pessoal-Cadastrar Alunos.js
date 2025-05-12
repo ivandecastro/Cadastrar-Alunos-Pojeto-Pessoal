@@ -1,31 +1,48 @@
 //Criando o array dos alunos com localStorage para armazela-los.
 const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
 
+//Função para indicar qual o sexo do aluno.
+const artigoAluno = (sexo) => {
+    if (sexo === 'Masculino') {
+        return ['do aluno', 'O aluno', 'o'];
+    } else if (sexo === 'Feminino') {
+        return ['da aluna', 'A aluna', 'a'];
+    } else {
+        return ['de alune', 'E alune', 'e'];
+    }
+}
+
 //Lista de todos os alunos que foram cadastrados.
 const adicionarAlunosNaLista = (alunos) => {
+    //Pegando a tag "ul" do html
     const ul = document.getElementById("lista-alunos");
     ul.innerHTML = ""; // limpa a lista antes de adicionar
 
-    alunos.forEach((aluno) => {
-        const li = document.createElement("li");
+    alunos.forEach((aluno) => { //Separa os alunos individualmente com suas respectivas notas.
+        const li = document.createElement("li"); //cria o elemento que será adicionado.
         const notas = Object.values(aluno.notas).join(" - ");
-        let status;
+
+        const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo); //Chama os artigos que serão utilizados.
+
+        let status; //Variável para mostrar o status dos alunos.
+        
+        //Calcula a média dos alunos.
         const media = (
-            (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / 3
+            (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / Object.values(aluno.notas).length
         ).toFixed(2);
 
-        if(media >= 6) {
-            status = 'Aprovado'
+        //Mostra se foi aprovado ou reprovado
+        if (media >= 6) {
+            status = `Aprovad${artigo3}`
         } else {
-            status = 'Reprovado'
+            status = `Reprovad${artigo3}`
         }
 
-        li.textContent = `${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
+        li.textContent = `${artigo2} ${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
         Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media} ==> ${status}`;
         ul.appendChild(li);
     });
 };
-
 
 //Function para proibir os possíveis resultados das perguntas.
 const proibicoes = (verificarValor, mensagem) => {
@@ -34,15 +51,12 @@ const proibicoes = (verificarValor, mensagem) => {
 
         alert(mensagem);
     } else {
-        verificarValor.trim();
+        verificarValor.trim(); //Tira todos os espaços vazios.
     }
 };
 
 //Chamando a função do botão de Cadastro dos alunos do html.
 const cadastrarAluno = () => {
-
-    //Chamando o array dos alunos que serão cadastrados.
-    alunos;
     //criando variáveis para a confirmação das informações.
     let confirmarPeloNome;
     let confirmação;
@@ -54,7 +68,6 @@ const cadastrarAluno = () => {
 
     // Perguntando
     cadastroPermitido('Deseja fazer o cadastro de um aluno?');
-
 
     const cadastro = () => {
         //Enquanto o cadrastro não for cancelado os cadastros continuarão.
@@ -81,31 +94,22 @@ const cadastrarAluno = () => {
 
             //perguntando o sexo do aluno.
             let sexoAluno = confirm('O sexo do aluno(a) é Masculino?');
-            let artigo;
 
-            //If para confirmar o sexo do aluno.
+            //Confirmando o sexo do aluno.
             if (sexoAluno === true) {
                 sexoAluno = 'Masculino';
-            } else if (sexoAluno === false) {
-                sexoAluno = confirm('O sexo do aluno(a) é Feminino?');
-                sexoAluno = sexoAluno === true ? 'Feminino' : 'Outros';
-            }
-
-            //If para confirmar o artigo correto do aluno.
-            if (sexoAluno === 'Masculino') {
-                artigo = 'do aluno';
-            } else if (sexoAluno === 'Feminino') {
-                artigo = 'da aluna';
             } else {
-                artigo = 'do alune';
+                let femininoConfirmado = confirm('O sexo do aluno(a) é Feminino?');
+                sexoAluno = femininoConfirmado === true ? 'Feminino' : 'Outros';
             }
 
             // Confirmar se a nota é === '' or === null or < 0.
             const obterNotaValida = (materia) => {
-                let nota;
+                let nota; //variável da nota.
 
                 do { //looping para confirmarção da nota.
-                    nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`);
+                    const [artigo] = artigoAluno(sexoAluno); //Pegando o artigo que será utilizado. 
+                    nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`); //Pergunta qual a nota do aluno.
 
                     // Garante que nota seja string válida para avaliação.
                     proibicoes(nota, 'Por favor, digite uma nota válida.');
@@ -115,7 +119,7 @@ const cadastrarAluno = () => {
                     nota === "" || // impede string vazia
                     isNaN(nota) || // impede letras ou símbolos
                     Number(nota) < 0 ||// impede nota negativa
-                    Number(nota) > 10
+                    Number(nota) > 10 //impede nota maior que 10.
                 );
 
                 return Number(nota); //retornar a nota como número.
@@ -171,32 +175,20 @@ const cadastrarAluno = () => {
                 maiorMedia = media;
                 melhorAluno = aluno.nome;
             }
-
-            let artigo; //Variável para especificar a frase da pergunta.
-            let segundoArtigo; //Variável para especificar a frase da pergunta.
-
-            //If para mostrar o artigo adequado para cada aluno.
-            if (aluno.sexo === 'Masculino') {
-                artigo = 'O aluno';
-                segundoArtigo = 'o';
-            } else if (aluno.sexo === 'Feminino') {
-                artigo = 'A aluna';
-                segundoArtigo = 'a';
-            } else {
-                artigo = 'E alune';
-                segundoArtigo = 'e';
-            }
+            
+            //Variáveis para especificar a frase da pergunta.
+            const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo);
 
             //Checando se o aluno foi aprovado ou reprovado.
-            const aprovado = media >= 6 ? `aprovad${segundoArtigo}` : `reprovad${segundoArtigo}`;
+            const aprovado = media >= 6 ? `aprovad${artigo3}` : `reprovad${artigo3}`;
 
             //Alert do resultado.
-            alert(`${artigo} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
+            alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
 
             //ternário para contar quais foram aprovados e quais foram reprovados.
             media >= 6 ? aprovados++ : reprovados++;
-            
-            adicionarAlunosNaLista(alunos);
+
+            adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
         }
 
         //If para evitar que esses logs sejam chamados sem um cadastro.
@@ -215,10 +207,9 @@ const cadastrarAluno = () => {
     console.log(alunos); //Mostra a lista de alunos após o cadastro.
 }
 
-
-
 //Pegando o botão de remover alunos do html.
 const removerAluno = () => {
+    localStorage.clear();
 }
 
 console.log(alunos);
