@@ -32,7 +32,7 @@ ul {
   left: -2rch;
   bottom: 450px;  
   margin-right: 61%;
-  background-color: bisque;
+  background-color: transparent;
 }
 
 h2 {
@@ -42,5 +42,5 @@ h2 {
 }
 
 label {
-  margin-left: 31.5%;
+  margin-left: 34.5%;
 }
