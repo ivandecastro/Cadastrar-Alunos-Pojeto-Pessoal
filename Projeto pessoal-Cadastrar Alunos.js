@@ -15,7 +15,7 @@ const artigoAluno = (sexo) => {
 //Lista de todos os alunos que foram cadastrados.
 const adicionarAlunosNaLista = (alunos) => {
     //Pegando a tag "ul" do html
-    const ul = document.getElementById("lista-alunos") || JSON.parse(localStorage.getItem('lista-alunos'));
+    const ul = document.getElementById("lista-alunos");
     ul.innerHTML = ""; // limpa a lista antes de adicionar
 
     alunos.forEach((aluno) => { //Separa os alunos individualmente com suas respectivas notas.
@@ -33,15 +33,15 @@ const adicionarAlunosNaLista = (alunos) => {
 
         //Mostra se foi aprovado ou reprovado
         if (media >= 6) {
-            status = `Aprovad${artigo3}`
+            status = `Aprovad${artigo3 /*Definindo o gênero*/}`
         } else {
-            status = `Reprovad${artigo3}`
+            status = `Reprovad${artigo3 /*Definindo o gênero*/}`
         }
 
+        //Atribuindo um valor á oque será adicionado à lista.
         li.textContent = `${artigo2} ${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
         Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media} ==> ${status}`;
-        ul.appendChild(li);
-        localStorage.setItem('lista-alunos', JSON.stringify(ul)); 
+        ul.appendChild(li); //Adicionando os alunos à lista "ul".
     });
 };
 
@@ -104,7 +104,6 @@ const cadastrarAluno = () => {
                 sexoAluno = femininoConfirmado === true ? 'Feminino' : 'Outros';
             }
 
-            // Confirmar se a nota é === '' or === null or < 0.
             const obterNotaValida = (materia) => {
                 let nota; //variável da nota.
 
@@ -133,12 +132,12 @@ const cadastrarAluno = () => {
 
             //Adicionando as informações dos alunos à lista.
             alunos.push({
-                nome: alunoACadastrar,
-                sexo: sexoAluno,
-                notas: {
-                    matematica: Number(notaMatemática),
-                    portugues: Number(notaPortugues),
-                    historia: Number(notaHistoria)
+                nome: alunoACadastrar, //Guarda o nome do aluno.
+                sexo: sexoAluno, //Guarda o sexo do aluno.
+                notas: { //Guarda as notas.
+                    matematica: Number(notaMatemática), //Nota Matemática.
+                    portugues: Number(notaPortugues), //Nota Português.
+                    historia: Number(notaHistoria) //Nota História.
                 }
             });
 
@@ -186,7 +185,7 @@ const cadastrarAluno = () => {
             //Alert do resultado.
             alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
 
-            //ternário para contar quais foram aprovados e quais foram reprovados.
+            //ternário para contar quantos alunos foram aprovados e quantos foram reprovados.
             media >= 6 ? aprovados++ : reprovados++;
 
             adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
@@ -204,7 +203,7 @@ const cadastrarAluno = () => {
         }
     }
 
-    cadastro();
+    cadastro(); //Executando a função.
     console.log(alunos); //Mostra a lista de alunos após o cadastro.
 }
 
@@ -214,31 +213,35 @@ const removerAluno = () => {
     let nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
     let confirmar;
 
-    if(nomeParaRemover === '') {
+    //if para verificar se o nome do aluno é igual - '' -. 
+    if (nomeParaRemover === '') {
         alert('Aluno não encontrado');
         return removerAluno();
     }
 
+    //If para impedir qualquer outro tipo de valor possível sem ser o nome.
     if (!nomeParaRemover) {
         alert('Por favor, Digite o nome de algum aluno cadastrado.');
         confirmar = confirm('Deseja cancelar a remoção de aluno.');
         confirmar === true ? nomeParaRemover === 'Algum Aluno' : removerAluno();
         return;
-    } 
-
-    const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaRemover.toLowerCase());
-
-    if(indice !== -1) {
-        const alunoRemovido = alunos.splice(indice, 1);
-        localStorage.setItem('alunos', JSON.stringify(alunos));
-        alert(`Aluno(a) ${alunoRemovido[0].nome} removido(a) com sucesso`);
-    } else {
-        alert('Aluno não encontrado');
-        return removerAluno();
     }
 
-   adicionarAlunosNaLista(alunos);
-   console.log(alunos);
+    //const dos Para definir qual aluno será removido analisando item por item do array 'Alunos'.
+    const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaRemover.toLowerCase());
+
+    //If para indicar se o aluno existe no array "Alunos".
+    if (indice !== -1) {
+        const alunoRemovido = alunos.splice(indice, 1); //Remover o aluno.
+        localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualizar o localStorage dos alunos.
+        alert(`Aluno(a) ${alunoRemovido[0].nome} removido(a) com sucesso`); //Alert de confirmação.
+    } else {
+        alert('Aluno não encontrado'); //Alert de confirmação.
+        return removerAluno(); //Retorna a pergunta.
+    }
+
+    
+    (adicionarAlunosNaLista(alunos), console.log(alunos)); //Atualizando a lista "ul" do html com o aluno removido.
 }
-console.log(alunos);
-console.log(alunos.length);
+
+(console.log(alunos), console.log(alunos.length)); //Mostrar o array de alunos.
