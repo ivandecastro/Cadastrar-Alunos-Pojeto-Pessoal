@@ -1,15 +1,26 @@
-h1 {
+.titles-wrapper {
+  position: relative;
+  bottom: 30px;
+  text-align: center;
+}
+
+.titles-wrapper h1 {
   text-align: center;
   font-size: 500%;
 }
 
-p {
+.titles-wrapper h2 {
   text-align: center;
   font-size: 250%;
   padding: 10px 20px;
 }
 
-button {
+.botoes-wrapper {
+  position: relative;
+  bottom: 65px;
+}
+
+.botoes-wrapper button {
   font-size: 35px;
   display: block;
   background-color: white;
@@ -22,20 +33,27 @@ button {
   cursor: pointer;
 }
 
-button:hover {
+.botoes-wrapper button:not(:last-child) {
+  margin-bottom: -100px;
+}
+
+.botoes-wrapper button:hover {
   /* Estilo quando o mouse passa por cima do botão */
   background-color: rgb(153, 213, 233);
 }
 
 .listas-wrapper {
-  margin-top: 10%;
+  position: relative;
+  bottom: 65px;
+  margin-top: 6%;
   text-align: center;
 }
 
 ul#lista-alunos li {
-  margin-bottom: 10px; /* aumenta o espaço entre cada item */
+  margin-bottom: 10px;
+  /* aumenta o espaço entre cada item */
 }
 
-label {
+.listas-wrapper label {
   margin-left: -2.9%;
 }
