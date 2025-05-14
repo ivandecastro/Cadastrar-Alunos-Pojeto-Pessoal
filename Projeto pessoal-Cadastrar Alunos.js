@@ -211,13 +211,18 @@ const cadastrarAluno = () => {
 //Pegando o botão de remover alunos do html.
 const removerAluno = () => {
     //Variável para perguntar o nome do aluno que será excluído.
-    const nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
+    let nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
     let confirmar;
 
+    if(nomeParaRemover === '') {
+        alert('Aluno não encontrado');
+        return removerAluno();
+    }
+
     if (!nomeParaRemover) {
-        alert('Por favor, Digite um nome');
+        alert('Por favor, Digite o nome de algum aluno cadastrado.');
         confirmar = confirm('Deseja cancelar a remoção de aluno.');
-        confirmar === true ? nomeParaRemover === ' ' : removerAluno();
+        confirmar === true ? nomeParaRemover === 'Algum Aluno' : removerAluno();
         return;
     } 
 
