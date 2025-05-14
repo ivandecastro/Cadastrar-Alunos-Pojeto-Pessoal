@@ -27,20 +27,15 @@ button:hover {
   background-color: rgb(153, 213, 233);
 }
 
-ul {
-  position: relative;
-  left: -2rch;
-  bottom: 450px;  
-  margin-right: 61%;
-  background-color: transparent;
+.listas-wrapper {
+  margin-top: 10%;
+  text-align: center;
 }
 
-h2 {
-  position: relative;
-  bottom: 465px;
-  left: 16%;
+ul#lista-alunos li {
+  margin-bottom: 10px; /* aumenta o espaço entre cada item */
 }
 
 label {
-  margin-left: 34.5%;
+  margin-left: -2.9%;
 }
