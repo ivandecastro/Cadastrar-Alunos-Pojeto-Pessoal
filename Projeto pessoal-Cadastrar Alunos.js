@@ -35,7 +35,7 @@ const cadastro = (confirmacao) => {
         //Confirmar o nome do Aluno.
         if (alunoACadastrar === '') {
             alert('Por favor, digite o nome de um aluno.');
-            return cadastro();
+            return cadastro(true);
         } else if (alunoACadastrar === null) { // verificar se a pessoa não clicou no botão por acidente
 
             confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?') //confirmando o cancelamento do cadastro
