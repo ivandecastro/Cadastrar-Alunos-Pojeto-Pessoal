@@ -61,7 +61,12 @@ const cadastro = (confirmacao) => {
         localStorage.setItem('alunos', JSON.stringify(alunos)); //Salvando as informações de cada aluno 
         //no localStorage.
 
-        cadastroPermitido('deseja fazer o cadastro de mais um aluno?'); //perguntar sobre outro cadastros.
+        //Chamando a função novamente.
+        const alunoNovo = cadastroPermitido('Deseja fazer o cadastro de mais um aluno?'); 
+        
+        if (alunoNovo === false) { //Caso não queira continuar o cadastro, o código para.
+            break;
+        }
     }
 
     let aprovados = 0; //Variável dos alunos aprovados.
