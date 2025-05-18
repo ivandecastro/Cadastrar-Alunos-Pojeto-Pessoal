@@ -6,6 +6,10 @@ const logs = () => { //Função para mostrar o array de alunos e o tamanho do ar
     console.log(alunos.length);
 }
 
+const formatarNome = (nome) => { //Função para formatar o nome do aluno.
+    return nome.toLowerCase()[0].toUpperCase() + nome.slice(1);
+}
+
 const cadastroPermitido = (mensagem) => { //Função para perguntar se o usuário deseja fazer o cadastro de um aluno.
     let confirmação = confirm(mensagem);
     return confirmação;
@@ -15,7 +19,7 @@ const cadastroPermitido = (mensagem) => { //Função para perguntar se o usuári
 const criarAluno = (name, gender, math, portuguese, history) => {
     //Adicionando as informações dos alunos à lista.
     const aluno = {
-        nome: name.toLowerCase()[0].toUpperCase() + name.slice(1), //Guarda o nome do aluno.
+        nome: formatarNome(name), //Guarda o nome do aluno.
         sexo: gender, //Guarda o sexo do aluno.
         notas: { //Guarda as notas.
             matematica: Number(math), //Nota Matemática.
@@ -47,9 +51,9 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
 
             //If para saber se a pessoa deseja cancelar o cadastro.
             if (confirmarPeloNome === true) {
-                break;
+                break; //Caso queira cancelar, o código para.
             } else {
-                return cadastro();
+                return cadastro(true); //Caso não queira cancelar, o código continua.
             }
         }
 
@@ -71,6 +75,8 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
 
         if (alunoNovo === false) { //Caso não queira continuar o cadastro, o código para.
             break;
+        } else {
+            return cadastro(true); //Caso queira continuar o cadastro, o código continua.
         }
     }
 
@@ -96,6 +102,7 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
         }
 
         exibirAlunos(aluno, media); //Chamando a função para mostrar os alunos cadastrados.
+        adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
 
         //Ternário para contar quantos alunos foram aprovados e quantos foram reprovados.
         media >= 6 ? aprovados++ : reprovados++;
@@ -181,8 +188,6 @@ const exibirAlunos = (aluno, media) => { //Função para mostrar os alunos cadas
 
     //Alert do resultado.
     alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
-
-    adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
 }
 
 const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que foram cadastrados.
@@ -193,15 +198,14 @@ const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que fora
     alunos.forEach((aluno) => { //Separa os alunos individualmente com suas respectivas notas.
         const li = document.createElement("li"); //Cria o elemento que será adicionado.
         const notas = Object.values(aluno.notas).join(" - ");
+        const valorNotas = Object.values(aluno.notas); //Coletando as notas do aluno.
 
         const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo); //Chama os artigos que serão utilizados.
 
         let status; //Variável para mostrar o status dos alunos.
 
         //Calcula a média dos alunos.
-        const media = (
-            (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / Object.values(aluno.notas).length
-        ).toFixed(2);
+        const media = calcularMedia(valorNotas); //Calcula a média dos alunos.
 
         //Mostra se foi aprovado ou reprovado.
         if (media >= 6) {
@@ -212,7 +216,7 @@ const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que fora
 
         //Atribuindo um valor á oque será adicionado à lista.
         li.textContent = `${artigo2} ${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
-        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media} ==> ${status}`;
+        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media.toFixed(2)} ==> ${status}`;
         ul.appendChild(li); //Adicionando os alunos à lista "ul".
     });
 };
@@ -222,7 +226,7 @@ const nomeRemovido = (indice) => { //Removendo o aluno escolhido.
     if (indice !== -1) {
         const alunoRemovido = alunos.splice(indice, 1); //Remover o aluno.
         localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualizar o localStorage dos alunos.
-        alert(`Aluno(a) ${alunoRemovido[0].nome} removido(a) com sucesso`); //Alert de confirmação.
+        alert(`Aluno(a) ${formatarNome(alunoRemovido[0].nome)} foi removido(a) com sucesso`); //Alert de confirmação.
     } else {
         alert('Aluno não encontrado'); //Alert de confirmação.
         return removerAluno(); //Retorna a pergunta.
@@ -261,6 +265,10 @@ const removerAluno = () => { //Pegando o botão de remover alunos do html.
     const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaRemover.toLowerCase());
 
     nomeRemovido(indice); //Chamando a função para remover o aluno.
+    const alunoNovo = cadastroPermitido('Deseja remover mais um aluno?'); //Pergunta se deseja remover mais um aluno.
+    if (alunoNovo === true) { //Caso queira continuar o cadastro, o código continua.
+        removerAluno(); //Chamando a função novamente.
+    }
 }
 
 logs()//Mostrar o array de alunos. //Mostrar o tamanho do array de alunos.
