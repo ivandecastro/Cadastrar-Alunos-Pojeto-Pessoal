@@ -1,12 +1,17 @@
 //Criando o array dos alunos com localStorage para armazela-los.
 const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
 
-//Pergunta para permissão de um novo cadastro.
-const cadastroPermitido = (mensagem) => {
+const logs = () => { //Função para mostrar o array de alunos e o tamanho do array.
+    console.log(alunos);
+    console.log(alunos.length);
+}
+
+const cadastroPermitido = (mensagem) => { //Função para perguntar se o usuário deseja fazer o cadastro de um aluno.
     let confirmação = confirm(mensagem);
     return confirmação;
 }
 
+//Essa função é responsável por criar o aluno e adicionar as informações dele ao array de alunos.
 const criarAluno = (name, gender, math, portuguese, history) => {
     //Adicionando as informações dos alunos à lista.
     const aluno = {
@@ -22,8 +27,8 @@ const criarAluno = (name, gender, math, portuguese, history) => {
     return aluno;
 }
 
-const cadastro = (confirmacao) => {
-    //criando variáveis para a confirmação das informações.
+const cadastro = (confirmacao) => { //Essa função é responsável por fazer o cadastro dos alunos.
+    //Criando variáveis para a confirmação das informações.
     let confirmarPeloNome;
 
     //Enquanto o cadrastro não for cancelado os cadastros continuarão.
@@ -36,11 +41,11 @@ const cadastro = (confirmacao) => {
         if (alunoACadastrar === '') {
             alert('Por favor, digite o nome de um aluno.');
             return cadastro(true);
-        } else if (alunoACadastrar === null) { // verificar se a pessoa não clicou no botão por acidente
+        } else if (alunoACadastrar === null) { //Verificar se a pessoa não clicou no botão por acidente.
 
-            confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?') //confirmando o cancelamento do cadastro
+            confirmarPeloNome = confirm('Deseja cancelar o cadastro do aluno?')//Confirmando o cancelamento do cadastro.
 
-            //if para saber se a pessoa deseja cancelar o cadastro.
+            //If para saber se a pessoa deseja cancelar o cadastro.
             if (confirmarPeloNome === true) {
                 break;
             } else {
@@ -48,7 +53,7 @@ const cadastro = (confirmacao) => {
             }
         }
 
-        const sexoAluno = generoAluno();
+        const sexoAluno = generoAluno(); //Chamando a função para perguntar o sexo do aluno.
 
         let nota1 = obterNotaValida('Matemática', sexoAluno); //Nota em matemática.
         let nota2 = obterNotaValida('Português', sexoAluno);   //Nota em português.
@@ -62,8 +67,8 @@ const cadastro = (confirmacao) => {
         //no localStorage.
 
         //Chamando a função novamente.
-        const alunoNovo = cadastroPermitido('Deseja fazer o cadastro de mais um aluno?'); 
-        
+        const alunoNovo = cadastroPermitido('Deseja fazer o cadastro de mais um aluno?');
+
         if (alunoNovo === false) { //Caso não queira continuar o cadastro, o código para.
             break;
         }
@@ -72,24 +77,17 @@ const cadastro = (confirmacao) => {
     let aprovados = 0; //Variável dos alunos aprovados.
     let reprovados = 0; //Variável dos alunos reprovados.
 
-    // Variável da maior média.
+    //Variável da maior média.
     let maiorMedia = 0;
     let melhorAluno = '';
 
     //For para calcular a média dos alunos.
     for (let i = 0; i < alunos.length; i++) {
-        //coletando as variáveis de cada aluno: nome do aluno e notas.
+        //Coletando as variáveis de cada aluno: nome do aluno e notas.
         let aluno = alunos[i];
         let notas = Object.values(aluno.notas);
-        let soma = 0;
 
-        //Somando as notas de cada aluno.
-        for (let j = 0; j < notas.length; j++) {
-            soma += notas[j];
-        }
-
-        //calculando a média
-        const media = soma / notas.length;
+        const media = calcularMedia(notas); //Chamando a função de calcular a média.
 
         //If para mostrar qual o aluno que teve a maior média.
         if (media > maiorMedia) {
@@ -97,16 +95,9 @@ const cadastro = (confirmacao) => {
             melhorAluno = aluno.nome;
         }
 
-        //Variáveis para especificar a frase da pergunta.
-        const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo);
+        exibirAlunos(aluno, media); //Chamando a função para mostrar os alunos cadastrados.
 
-        //Checando se o aluno foi aprovado ou reprovado.
-        const aprovado = media >= 6 ? `aprovad${artigo3}` : `reprovad${artigo3}`;
-
-        //Alert do resultado.
-        alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
-
-        //ternário para contar quantos alunos foram aprovados e quantos foram reprovados.
+        //Ternário para contar quantos alunos foram aprovados e quantos foram reprovados.
         media >= 6 ? aprovados++ : reprovados++;
 
         adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
@@ -124,8 +115,7 @@ const cadastro = (confirmacao) => {
     }
 }
 
-//Função para indicar qual o sexo do aluno.
-const artigoAluno = (sexo) => {
+const artigoAluno = (sexo) => { //Função para indicar qual o sexo do aluno.
     if (sexo === 'Masculino') {
         return ['do aluno', 'O aluno', 'o'];
     } else if (sexo === 'Feminino') {
@@ -135,7 +125,7 @@ const artigoAluno = (sexo) => {
     }
 }
 
-const generoAluno = () => {
+const generoAluno = () => { //Função para perguntar o sexo do aluno.
     let alunoGenero = confirm('O sexo do aluno(a) é Masculino?');
 
     if (alunoGenero === true) {
@@ -148,8 +138,7 @@ const generoAluno = () => {
     return alunoGenero;
 }
 
-//Function para proibir os possíveis resultados das perguntas.
-const proibicoes = (verificarValor) => {
+const proibicoes = (verificarValor) => { //Function para proibir os possíveis resultados das perguntas.
     return (
         verificarValor === '' ||
         verificarValor === null ||
@@ -159,30 +148,50 @@ const proibicoes = (verificarValor) => {
     );
 };
 
-const obterNotaValida = (materia, genero) => {
-    let nota; //variável da nota.
+const obterNotaValida = (materia, genero) => { //Função para verificar se a nota é válida.
+    let nota; //Variável da nota.
     const [artigo] = artigoAluno(genero); //Pegando o artigo que será utilizado. 
 
-    do { //looping para confirmarção da nota.
+    do { //Looping para confirmarção da nota.
         nota = prompt(`Digite a nota ${artigo} de 1 a 10 em: ${materia}.`); //Pergunta qual a nota do aluno.
 
-        // Garante que nota seja string válida para avaliação.
+        //Garante que nota seja string válida para avaliação.
         if (proibicoes(nota)) {
             alert('Por favor, digite uma nota válida.');
         }
     } while (proibicoes(nota));
 
-    return Number(nota); //retornar a nota como número.
+    return Number(nota); //Retornar a nota como número.
 }
 
-//Lista de todos os alunos que foram cadastrados.
-const adicionarAlunosNaLista = (alunos) => {
-    //Pegando a tag "ul" do html
+const calcularMedia = (notas) => { //Função para calcular a média dos alunos.
+    let soma = 0; //Variável para somar as notas dos alunos.
+    //Somando as notas de cada aluno.
+    for (let j = 0; j < notas.length; j++) {
+        soma += notas[j];
+    }
+    const calculoMedia = soma / notas.length; //Calculando a média
+    return calculoMedia; //Retornando a média.
+}
+
+const exibirAlunos = (aluno, media) => { //Função para mostrar os alunos cadastrados.
+    //Variáveis para especificar a frase da pergunta.
+    const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo);
+
+    //Checando se o aluno foi aprovado ou reprovado.
+    const aprovado = media >= 6 ? `aprovad${artigo3}` : `reprovad${artigo3}`;
+
+    //Alert do resultado.
+    alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
+}
+
+const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que foram cadastrados.
+    //Pegando a tag "ul" do html.
     const ul = document.getElementById("lista-alunos");
-    ul.innerHTML = ""; // limpa a lista antes de adicionar
+    ul.innerHTML = ""; // limpa a lista antes de adicionar.
 
     alunos.forEach((aluno) => { //Separa os alunos individualmente com suas respectivas notas.
-        const li = document.createElement("li"); //cria o elemento que será adicionado.
+        const li = document.createElement("li"); //Cria o elemento que será adicionado.
         const notas = Object.values(aluno.notas).join(" - ");
 
         const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo); //Chama os artigos que serão utilizados.
@@ -194,7 +203,7 @@ const adicionarAlunosNaLista = (alunos) => {
             (aluno.notas.matematica + aluno.notas.portugues + aluno.notas.historia) / Object.values(aluno.notas).length
         ).toFixed(2);
 
-        //Mostra se foi aprovado ou reprovado
+        //Mostra se foi aprovado ou reprovado.
         if (media >= 6) {
             status = `Aprovad${artigo3 /*Definindo o gênero*/}`
         } else {
@@ -208,20 +217,18 @@ const adicionarAlunosNaLista = (alunos) => {
     });
 };
 
-//Chamando a função do botão de Cadastro dos alunos do html.
-const cadastrarAluno = () => {
+const cadastrarAluno = () => { //Chamando a função do botão de Cadastro dos alunos do html.
     let confirmar = cadastroPermitido('Deseja fazer o cadastro de um aluno?');
     cadastro(confirmar); //Executando a função.
-    console.log(alunos); //Mostra a lista de alunos após o cadastro.
+    logs(); //Mostra a lista de alunos após o cadastro.
 }
 
-//Pegando o botão de remover alunos do html.
-const removerAluno = () => {
+const removerAluno = () => { //Pegando o botão de remover alunos do html.
     //Variável para perguntar o nome do aluno que será excluído.
     let nomeParaRemover = prompt("Digite o nome do aluno que deseja remover:");
     let confirmar;
 
-    //if para verificar se o nome do aluno é igual - '' -. 
+    //If para verificar se o nome do aluno é igual - '' - . 
     if (nomeParaRemover === '') {
         alert('Aluno não encontrado');
         return removerAluno();
@@ -235,7 +242,7 @@ const removerAluno = () => {
         return;
     }
 
-    //const dos Para definir qual aluno será removido analisando item por item do array 'Alunos'.
+    //Const dos Para definir qual aluno será removido analisando item por item do array 'Alunos'.
     const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaRemover.toLowerCase());
 
     //If para indicar se o aluno existe no array "Alunos".
@@ -249,8 +256,8 @@ const removerAluno = () => {
     }
 
 
-    (adicionarAlunosNaLista(alunos), console.log(alunos)); //Atualizando a lista "ul" do html com o aluno removido.
+    adicionarAlunosNaLista(alunos); //Atualizando a lista "ul" do html com o aluno removido.
+    logs(); //Mostra a lista de alunos após o cadastro.
 }
 
-console.log(alunos); //Mostrar o array de alunos.
-console.log(alunos.length); //Mostrar o tamanho do array de alunos. 
+logs()//Mostrar o array de alunos. //Mostrar o tamanho do array de alunos.
