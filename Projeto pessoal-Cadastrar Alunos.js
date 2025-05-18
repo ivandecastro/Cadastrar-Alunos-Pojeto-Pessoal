@@ -15,7 +15,7 @@ const cadastroPermitido = (mensagem) => { //Função para perguntar se o usuári
 const criarAluno = (name, gender, math, portuguese, history) => {
     //Adicionando as informações dos alunos à lista.
     const aluno = {
-        nome: name, //Guarda o nome do aluno.
+        nome: name.toLowerCase()[0].toUpperCase() + name.slice(1), //Guarda o nome do aluno.
         sexo: gender, //Guarda o sexo do aluno.
         notas: { //Guarda as notas.
             matematica: Number(math), //Nota Matemática.
@@ -99,8 +99,6 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
 
         //Ternário para contar quantos alunos foram aprovados e quantos foram reprovados.
         media >= 6 ? aprovados++ : reprovados++;
-
-        adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
     }
 
     //If para evitar que esses logs sejam chamados sem um cadastro.
@@ -183,6 +181,8 @@ const exibirAlunos = (aluno, media) => { //Função para mostrar os alunos cadas
 
     //Alert do resultado.
     alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
+
+    adicionarAlunosNaLista(alunos); //Adicionando os alunos cadastrados à lista.
 }
 
 const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que foram cadastrados.
@@ -217,6 +217,21 @@ const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que fora
     });
 };
 
+const nomeRemovido = (indice) => { //Removendo o aluno escolhido.
+    //If para indicar se o aluno existe no array "Alunos".
+    if (indice !== -1) {
+        const alunoRemovido = alunos.splice(indice, 1); //Remover o aluno.
+        localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualizar o localStorage dos alunos.
+        alert(`Aluno(a) ${alunoRemovido[0].nome} removido(a) com sucesso`); //Alert de confirmação.
+    } else {
+        alert('Aluno não encontrado'); //Alert de confirmação.
+        return removerAluno(); //Retorna a pergunta.
+    }
+
+    adicionarAlunosNaLista(alunos); //Atualizando a lista "ul" do html com o aluno removido.
+    logs(); //Mostra a lista de alunos após o cadastro.
+}
+
 const cadastrarAluno = () => { //Chamando a função do botão de Cadastro dos alunos do html.
     let confirmar = cadastroPermitido('Deseja fazer o cadastro de um aluno?');
     cadastro(confirmar); //Executando a função.
@@ -245,19 +260,7 @@ const removerAluno = () => { //Pegando o botão de remover alunos do html.
     //Const dos Para definir qual aluno será removido analisando item por item do array 'Alunos'.
     const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaRemover.toLowerCase());
 
-    //If para indicar se o aluno existe no array "Alunos".
-    if (indice !== -1) {
-        const alunoRemovido = alunos.splice(indice, 1); //Remover o aluno.
-        localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualizar o localStorage dos alunos.
-        alert(`Aluno(a) ${alunoRemovido[0].nome} removido(a) com sucesso`); //Alert de confirmação.
-    } else {
-        alert('Aluno não encontrado'); //Alert de confirmação.
-        return removerAluno(); //Retorna a pergunta.
-    }
-
-
-    adicionarAlunosNaLista(alunos); //Atualizando a lista "ul" do html com o aluno removido.
-    logs(); //Mostra a lista de alunos após o cadastro.
+    nomeRemovido(indice); //Chamando a função para remover o aluno.
 }
 
 logs()//Mostrar o array de alunos. //Mostrar o tamanho do array de alunos.
