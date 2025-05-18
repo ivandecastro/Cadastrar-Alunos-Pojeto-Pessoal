@@ -109,7 +109,7 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
     }
 
     //If para evitar que esses logs sejam chamados sem um cadastro.
-    if (aprovados != 0 && reprovados != 0) {
+    if (aprovados != 0 || reprovados != 0) {
         console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
         console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
     }
