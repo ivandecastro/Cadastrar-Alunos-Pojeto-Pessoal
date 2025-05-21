@@ -108,16 +108,25 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
         media >= 6 ? aprovados++ : reprovados++;
     }
 
-    //If para evitar que esses logs sejam chamados sem um cadastro.
-    if (aprovados != 0 || reprovados != 0) {
-        console.log(`A quantidade de alunos aprovados foi de: ${aprovados}`);
-        console.log(`A quantidade de alunos reprovados foi de: ${reprovados}`);
+    //Chamando a função para mostrar os alunos cadastrados.
+    const [apd, rpd, mL] = logAluno(aprovados, reprovados, melhorAluno, maiorMedia); 
+    
+    if (aprovados != 0 || reprovados != 0) { //If para evitar que esses logs sejam chamados sem um cadastro.
+        console.log(apd);
+        console.log(rpd);
     }
+   
+    if (maiorMedia != 0 && melhorAluno != '') {  //If para evitar que esse alert seja chamado sem um cadastro.
+        alert(`${mL}`);
+    }
+}
 
-    //If para evitar que esse alert seja chamado sem um cadastro.
-    if (maiorMedia != 0 && melhorAluno != '') {
-        alert(`O aluno(a) com a maior nota é: ${melhorAluno} com uma média de ${maiorMedia.toFixed(2)} pontos.`);
-    }
+const logAluno = (aprovados, reprovados, melhorAluno, maiorMedia) => { //Função para mostrar os alunos cadastrados.
+    return [
+        `A quantidade de alunos aprovados foi de: ${aprovados}`,
+        `A quantidade de alunos reprovados foi de: ${reprovados}`,
+        `O aluno(a) com a maior nota é: ${melhorAluno} com uma média de ${maiorMedia.toFixed(2)}.`
+    ];
 }
 
 const artigoAluno = (sexo) => { //Função para indicar qual o sexo do aluno.
@@ -197,8 +206,8 @@ const adicionarAlunosNaLista = (alunos) => { //Lista de todos os alunos que fora
 
     alunos.forEach((aluno) => { //Separa os alunos individualmente com suas respectivas notas.
         const li = document.createElement("li"); //Cria o elemento que será adicionado.
-        const notas = Object.values(aluno.notas).join(" - ");
-        const valorNotas = Object.values(aluno.notas); //Coletando as notas do aluno.
+        const notas = Object.values(aluno.notas);
+        const valorNotas = notas; //Coletando as notas do aluno.
 
         const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo); //Chama os artigos que serão utilizados.
 
