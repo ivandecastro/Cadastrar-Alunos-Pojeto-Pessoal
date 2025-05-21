@@ -1,5 +1,5 @@
 //Criando o array dos alunos com localStorage para armazela-los.
-const alunos = JSON.parse(localStorage.getItem('alunos')) || [];
+const alunos = JSON.parse(localStorage.getItem('alunos')) || []; //Array dos alunos.
 
 const logs = () => { //Função para mostrar o array de alunos e o tamanho do array.
     console.log(alunos);
@@ -109,13 +109,13 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
     }
 
     //Chamando a função para mostrar os alunos cadastrados.
-    const [apd, rpd, mL] = logAluno(aprovados, reprovados, melhorAluno, maiorMedia); 
-    
+    const [apd, rpd, mL] = logAluno(aprovados, reprovados, melhorAluno, maiorMedia);
+
     if (aprovados != 0 || reprovados != 0) { //If para evitar que esses logs sejam chamados sem um cadastro.
         console.log(apd);
         console.log(rpd);
     }
-   
+
     if (maiorMedia != 0 && melhorAluno != '') {  //If para evitar que esse alert seja chamado sem um cadastro.
         alert(`${mL}`);
     }
@@ -278,6 +278,58 @@ const removerAluno = () => { //Pegando o botão de remover alunos do html.
     if (alunoNovo === true) { //Caso queira continuar o cadastro, o código continua.
         removerAluno(); //Chamando a função novamente.
     }
+}
+
+const editarAluno = () => { //Pegando o botão de editar alunos do html.
+    //Variável para perguntar o nome do aluno que será editado.
+    let nomeParaEditar = prompt("Digite o nome do aluno que deseja editar:");
+    let confirmar;
+
+    //If para verificar se o nome do aluno é igual - '' - . 
+    if (nomeParaEditar === '') {
+        alert('Aluno não encontrado');
+        return editarAluno();
+    }
+
+    //If para impedir qualquer outro tipo de valor possível sem ser o nome.
+    if (!nomeParaEditar) {
+        alert('Por favor, Digite o nome de algum aluno cadastrado.');
+        confirmar = confirm('Deseja cancelar a remoção de aluno.');
+        confirmar === true ? nomeParaEditar === 'Algum Aluno' : editarAluno();
+        return;
+    }
+
+    //Const dos Para definir qual aluno será editado analisando item por item do array 'Alunos'.
+    const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaEditar.toLowerCase());
+    let atualizarAluno = prompt('Digite o novo nome do aluno:'); //Pergunta o novo nome do aluno.
+    let confirmarNome;
+
+    //If para verificar se o nome do aluno é igual - '' - . 
+    if (atualizarAluno === '') {
+        alert('Aluno não encontrado');
+        return editarAluno();
+    }
+
+    //If para impedir qualquer outro tipo de valor possível sem ser o nome.
+    if (!atualizarAluno) {
+        alert('Por favor, Digite o nome de algum aluno cadastrado.');
+        confirmarNome = confirm('Deseja cancelar a edição de aluno.');
+        confirmarNome === true ? atualizarAluno === 'Algum Aluno' : editarAluno();
+        return;
+    }
+
+    //If para verificar se o aluno existe no array "Alunos".
+    if (indice !== -1) {
+        alunos[indice].nome = formatarNome(atualizarAluno); //Atualiza o nome do aluno.
+        localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualiza o localStorage dos alunos.
+        alert(`O nome do aluno(a) foi atualizado com sucesso para: ${formatarNome(atualizarAluno)}`); //Alert de confirmação.
+    } else {
+        alert('Aluno não encontrado'); //Alert de confirmação.
+        return editarAluno(); //Retorna a pergunta.
+    }
+
+    adicionarAlunosNaLista(alunos); //Atualizando a lista "ul" do html com o aluno editado.
+    logs(); //Mostra a lista de alunos após o cadastro.
 }
 
 logs()//Mostrar o array de alunos. //Mostrar o tamanho do array de alunos.
