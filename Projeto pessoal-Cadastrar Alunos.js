@@ -9,6 +9,12 @@ const alunos = JSON.parse(localStorage.getItem('alunos')) || []; //Array dos alu
 // Funções Utilitárias
 // ==============================
 
+const dataAtual = () => {
+    const agora = new Date();
+    return agora.toLocaleDateString() + ' - ' + agora.toLocaleTimeString();
+}
+
+
 const logs = () => {
     console.log(alunos);
     console.log(alunos.length);
@@ -96,7 +102,8 @@ const criarAluno = (name, gender, math, portuguese, history) => {
             matematica: Number(math),
             portugues: Number(portuguese),
             historia: Number(history)
-        }
+        },
+        dataCadastro: dataAtual()
     };
     alunos.push(aluno);
     return aluno;
@@ -221,6 +228,7 @@ const editarAluno = () => {
         portugues: novaNotaPortugues,
         historia: novaNotaHistoria
     };
+    aluno.dataCadastro = dataAtual();
 
     const [artigo] = obterArtigoPorGenero(aluno.sexo);
 
@@ -309,7 +317,8 @@ const adicionarAlunosNaLista = (alunos) => {
         }
 
         li.textContent = `${artigo2} ${aluno.nome} - Matemática: ${aluno.notas.matematica} - 
-        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media.toFixed(2)} ==> ${formatarNome(status)}`;
+        Português: ${aluno.notas.portugues} - História: ${aluno.notas.historia}; Média: ${media.toFixed(2)} ==> 
+            ${formatarNome(status)} [${aluno.dataCadastro}]`;
         ul.appendChild(li);
     });
 }
