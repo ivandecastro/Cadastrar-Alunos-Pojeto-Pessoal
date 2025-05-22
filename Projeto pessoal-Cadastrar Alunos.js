@@ -10,6 +10,8 @@ const formatarNome = (nome) => { //Função para formatar o nome do aluno.
     return nome.toLowerCase()[0].toUpperCase() + nome.slice(1);
 }
 
+const nomeInvalido = (nome) => !nome || nome.trim() === ''; //Função para verificar se o nome é inválido.
+
 const cadastroPermitido = (mensagem) => { //Função para perguntar se o usuário deseja fazer o cadastro de um aluno.
     let confirmação = confirm(mensagem);
     return confirmação;
@@ -42,7 +44,7 @@ const cadastro = (confirmacao) => { //Essa função é responsável por fazer o 
         const alunoACadastrar = prompt('Qual o nome do aluno(a)?');
 
         //Confirmar o nome do Aluno.
-        if (alunoACadastrar === '') {
+        if (nomeInvalido(alunoACadastrar)) { //Verificar se o nome é inválido.
             alert('Por favor, digite o nome de um aluno.');
             return cadastro(true);
         } else if (alunoACadastrar === null) { //Verificar se a pessoa não clicou no botão por acidente.
@@ -152,6 +154,9 @@ const generoAluno = () => { //Função para perguntar o sexo do aluno.
     return alunoGenero;
 }
 
+const statusAluno = (media, sexo) => media >= 6 ? `aprovad${artigoAluno(sexo)[2]}` : `reprovad${artigoAluno(sexo)[2]}`;
+
+
 const proibicoes = (verificarValor) => { //Function para proibir os possíveis resultados das perguntas.
     return (
         verificarValor === '' ||
@@ -189,11 +194,10 @@ const calcularMedia = (notas) => { //Função para calcular a média dos alunos.
 }
 
 const exibirAlunos = (aluno, media) => { //Função para mostrar os alunos cadastrados.
-    //Variáveis para especificar a frase da pergunta.
-    const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo);
+    const [artigo, artigo2, artigo3] = artigoAluno(aluno.sexo); //Variáveis para especificar a frase da pergunta.
 
     //Checando se o aluno foi aprovado ou reprovado.
-    const aprovado = media >= 6 ? `aprovad${artigo3}` : `reprovad${artigo3}`;
+    const aprovado = statusAluno(media, aluno.sexo); //Mostrando se o aluno foi aprovado ou reprovado.
 
     //Alert do resultado.
     alert(`${artigo2} ${aluno.nome} foi ${aprovado} com uma média de: ${media.toFixed(2)} pontos.`);
@@ -281,55 +285,63 @@ const removerAluno = () => { //Pegando o botão de remover alunos do html.
 }
 
 const editarAluno = () => { //Pegando o botão de editar alunos do html.
-    //Variável para perguntar o nome do aluno que será editado.
     let nomeParaEditar = prompt("Digite o nome do aluno que deseja editar:");
     let confirmar;
 
-    //If para verificar se o nome do aluno é igual - '' - . 
-    if (nomeParaEditar === '') {
-        alert('Aluno não encontrado');
-        return editarAluno();
-    }
-
-    //If para impedir qualquer outro tipo de valor possível sem ser o nome.
-    if (!nomeParaEditar) {
-        alert('Por favor, Digite o nome de algum aluno cadastrado.');
-        confirmar = confirm('Deseja cancelar a remoção de aluno.');
+    if (nomeParaEditar === null) { //Verificar se a pessoa não clicou no botão por acidente.
+        confirmar = confirm('Deseja cancelar a edição do aluno?')//Confirmando o cancelamento da edição.
         confirmar === true ? nomeParaEditar === 'Algum Aluno' : editarAluno();
         return;
     }
 
-    //Const dos Para definir qual aluno será editado analisando item por item do array 'Alunos'.
-    const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaEditar.toLowerCase());
-    let atualizarAluno = prompt('Digite o novo nome do aluno:'); //Pergunta o novo nome do aluno.
-    let confirmarNome;
-
-    //If para verificar se o nome do aluno é igual - '' - . 
-    if (atualizarAluno === '') {
-        alert('Aluno não encontrado');
+    if (nomeInvalido(nomeParaEditar)) { //If para verificar se o nome do aluno é igual - '' - .
+        alert('Aluno não encontrado.');
         return editarAluno();
     }
 
-    //If para impedir qualquer outro tipo de valor possível sem ser o nome.
-    if (!atualizarAluno) {
-        alert('Por favor, Digite o nome de algum aluno cadastrado.');
-        confirmarNome = confirm('Deseja cancelar a edição de aluno.');
-        confirmarNome === true ? atualizarAluno === 'Algum Aluno' : editarAluno();
-        return;
+    //Const dos Para definir qual aluno será editado analisando item por item do array 'Alunos'.
+    const indice = alunos.findIndex(aluno => aluno.nome.toLowerCase() === nomeParaEditar.toLowerCase())
+
+    if (indice === -1) { //If para verificar se o aluno existe no array "Alunos".
+        alert('Aluno não encontrado.');
+        return editarAluno();
     }
 
-    //If para verificar se o aluno existe no array "Alunos".
-    if (indice !== -1) {
-        alunos[indice].nome = formatarNome(atualizarAluno); //Atualiza o nome do aluno.
-        localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualiza o localStorage dos alunos.
-        alert(`O nome do aluno(a) foi atualizado com sucesso para: ${formatarNome(atualizarAluno)}`); //Alert de confirmação.
-    } else {
-        alert('Aluno não encontrado'); //Alert de confirmação.
-        return editarAluno(); //Retorna a pergunta.
-    }
+    const aluno = alunos[indice]; //Pegando o aluno que será editado.
+
+    let novoNome; //Variável para o novo nome do aluno.
+
+    do { //Looping para confirmarção do nome.
+        novoNome = prompt(`Editar nome (${aluno.nome}):`, aluno.nome);
+
+        if (nomeInvalido(novoNome)) { //Verificar se o nome é inválido.
+            alert('Por favor, digite um nome.');
+        }
+    } while (nomeInvalido(novoNome)); //loop para confirmar o nome.
+
+    const novoSexo = generoAluno(); //Chamando a função para perguntar o sexo do aluno.
+
+    const novaNotaMatematica = obterNotaValida('Matemática', novoSexo); //Atualizando a nota de matemática.
+    const novaNotaPortugues = obterNotaValida('Português', novoSexo); //Atualizando a nota de português.
+    const novaNotaHistoria = obterNotaValida('História', novoSexo); //Atualizando a nota de história.
+
+    aluno.nome = formatarNome(novoNome);
+    aluno.sexo = novoSexo; //Atualizando o sexo do aluno.
+
+    aluno.notas = { //Atualizando as notas do aluno.
+        matematica: novaNotaMatematica,
+        portugues: novaNotaPortugues,
+        historia: novaNotaHistoria
+    };
+
+    const [artigo] = artigoAluno(aluno.sexo); //Chama os artigos que serão utilizados.
+
+    alunos[indice] = aluno; //Atualizando o aluno editado no array.
+    localStorage.setItem('alunos', JSON.stringify(alunos)); //Atualizando o localStorage dos alunos.
+    alert(`Informações ${artigo} ${aluno.nome} foram atualizadas com sucesso!`); //Alert de confirmação.
 
     adicionarAlunosNaLista(alunos); //Atualizando a lista "ul" do html com o aluno editado.
     logs(); //Mostra a lista de alunos após o cadastro.
 }
 
-logs()//Mostrar o array de alunos. //Mostrar o tamanho do array de alunos.
+logs()//Mostrar o array de alunos ,Mostrar o tamanho do array de alunos.
