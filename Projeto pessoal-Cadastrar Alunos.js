@@ -4,6 +4,8 @@
 
 const alunos = JSON.parse(localStorage.getItem('alunos')) || []; //Array dos alunos.
 
+const salvarAlunosNoStorage = () => localStorage.setItem("alunos", JSON.stringify(alunos));
+
 
 // ==============================
 // Funções Utilitárias
@@ -106,6 +108,7 @@ const criarAluno = (name, gender, math, portuguese, history) => {
         dataCadastro: dataAtual()
     };
     alunos.push(aluno);
+    salvarAlunosNoStorage();
     return aluno;
 }
 
@@ -133,7 +136,6 @@ const cadastro = (confirmacao) => {
         let nota3 = obterNotaValida('História', sexoAluno);
 
         criarAluno(alunoACadastrar, sexoAluno, nota1, nota2, nota3);
-        localStorage.setItem('alunos', JSON.stringify(alunos));
 
         const alunoNovo = cadastroPermitido('Deseja fazer o cadastro de mais um aluno?');
         if (alunoNovo === false) {
@@ -233,7 +235,7 @@ const editarAluno = () => {
     const [artigo] = obterArtigoPorGenero(aluno.sexo);
 
     alunos[indice] = aluno;
-    localStorage.setItem('alunos', JSON.stringify(alunos));
+    salvarAlunosNoStorage();
     alert(`Informações ${artigo} ${aluno.nome} foram atualizadas com sucesso!`);
 
     adicionarAlunosNaLista(alunos);
@@ -274,7 +276,7 @@ const removerAluno = () => {
 const nomeRemovido = (indice) => {
     if (indice !== -1) {
         const alunoRemovido = alunos.splice(indice, 1);
-        localStorage.setItem('alunos', JSON.stringify(alunos));
+        salvarAlunosNoStorage();
         alert(`Aluno(a) ${formatarNome(alunoRemovido[0].nome)} foi removido(a) com sucesso`);
     } else {
         alert('Aluno não encontrado');
