@@ -54,6 +54,6 @@ ul#lista-alunos li {
   /* aumenta o espaço entre cada item */
 }
 
-.listas-wrapper label {
+.listas-wrapper li {
   margin-left: -2.9%;
 }
